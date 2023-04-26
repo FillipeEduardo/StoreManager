@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using StoreManager.Abstractions.Repositories;
 using StoreManager.Data;
-using StoreManager.Exceptions;
 using System.Linq.Expressions;
 
 namespace StoreManager.Repositories
@@ -24,9 +23,7 @@ namespace StoreManager.Repositories
 
         public async Task<TEntity> GetByFunc(Expression<Func<TEntity, bool>> func)
         {
-            var result = await _dbSet.FirstOrDefaultAsync(func);
-            if (result is null) throw new DbNotFoundException($"{nameof(TEntity)} not found");
-            return result;
+            return await _dbSet.FirstOrDefaultAsync(func);
         }
 
         public async Task<TEntity> Create(TEntity entity)

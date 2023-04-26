@@ -2,6 +2,7 @@
 using StoreManager.Abstractions.Repositories;
 using StoreManager.Abstractions.Services;
 using StoreManager.DTOs.ViewModels;
+using StoreManager.Exceptions;
 using StoreManager.Models;
 
 namespace StoreManager.Services;
@@ -28,6 +29,7 @@ public class ProductService : IProductService
     {
         var data = await _productRepository.GetByFunc(x => x.Id == id);
         var result = _mapper.Map<ProductViewModel>(data);
+        if (result is null) throw new DbNotFoundException("Product not found");
         return result;
     }
 }
