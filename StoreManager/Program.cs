@@ -1,3 +1,4 @@
+using StoreManager.DTOs;
 using StoreManager.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -5,8 +6,11 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddDataBase(builder.Configuration);
-builder.Services.AddRepositories();
+builder.Services
+    .AddDataBase(builder.Configuration)
+    .AddRepositories()
+    .AddServices()
+    .AddAutoMapper(typeof(StoreProfile));
 
 var app = builder.Build();
 
