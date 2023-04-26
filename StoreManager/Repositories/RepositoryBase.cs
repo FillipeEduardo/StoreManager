@@ -8,10 +8,12 @@ namespace StoreManager.Repositories
 {
     public class RepositoryBase<TEntity> : IRepositoryBase<TEntity> where TEntity : class
     {
+        private readonly AppDbContext _context;
         private readonly DbSet<TEntity> _dbSet;
 
         public RepositoryBase(AppDbContext context)
         {
+            _context = context;
             _dbSet = context.Set<TEntity>();
         }
 
@@ -43,6 +45,11 @@ namespace StoreManager.Repositories
         {
             _dbSet.Remove(entity);
             return entity;
+        }
+
+        public async Task Commit()
+        {
+            await _context.SaveChangesAsync();
         }
     }
 }

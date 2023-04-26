@@ -9,5 +9,6 @@ namespace StoreManager.Abstractions.Repositories
         Task<List<TEntity>> GetAll();
         Task<TEntity> GetByFunc(Expression<Func<TEntity, bool>> func);
         TEntity Update(TEntity entity);
+        Task Commit();
     }
 }
