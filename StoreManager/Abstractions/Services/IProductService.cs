@@ -1,4 +1,5 @@
-﻿using StoreManager.DTOs.ViewModels;
+﻿using StoreManager.DTOs.InputModels;
+using StoreManager.DTOs.ViewModels;
 
 namespace StoreManager.Abstractions.Services
 {
@@ -6,5 +7,6 @@ namespace StoreManager.Abstractions.Services
     {
         Task<List<ProductViewModel>> GetAllProducts();
         Task<ProductViewModel> GetProductById(int id);
+        Task<ProductViewModel> Createproduct(ProductInputModel model);
     }
 }

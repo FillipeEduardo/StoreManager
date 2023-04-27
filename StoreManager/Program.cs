@@ -10,7 +10,8 @@ builder.Services
     .AddDataBase(builder.Configuration)
     .AddRepositories()
     .AddServices()
-    .AddAutoMapper(typeof(StoreProfile));
+    .AddAutoMapper(typeof(StoreProfile))
+    .AddValidators();
 
 var app = builder.Build();
 

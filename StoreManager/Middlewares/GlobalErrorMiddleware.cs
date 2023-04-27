@@ -34,8 +34,9 @@ namespace StoreManager.Middlewares
             context.Response.ContentType = "application/json";
             var result = JsonSerializer.Serialize(new
             {
-                message = ex.Message,
-                type = statusCode
+                errors = ex.Message,
+                status = statusCode,
+                title = "One or more errors occurred"
             });
             return context.Response.WriteAsync(result);
         }

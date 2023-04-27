@@ -12,4 +12,9 @@ public static class ProductMock
         products.Add(new Product { Id = 3, Name = "'Escudo do Capitão América'" });
         return products;
     }
+
+    public static Product GetProduct()
+    {
+        return new Product { Id = 1, Name = "Martelo de Thor" };
+    }
 }

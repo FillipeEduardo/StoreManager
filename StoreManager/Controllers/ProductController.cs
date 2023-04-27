@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using StoreManager.Abstractions.Services;
+using StoreManager.DTOs.InputModels;
 
 namespace StoreManager.Controllers;
 
@@ -23,5 +24,12 @@ public class ProductController : ControllerBase
     public async Task<IActionResult> GetById(int id)
     {
         return Ok(await _productService.GetProductById(id));
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> CreateProduct(ProductInputModel model)
+    {
+        var result = await _productService.Createproduct(model);
+        return Created($"products/{result.Id}", result);
     }
 }

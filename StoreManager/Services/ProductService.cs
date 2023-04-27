@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using StoreManager.Abstractions.Repositories;
 using StoreManager.Abstractions.Services;
+using StoreManager.DTOs.InputModels;
 using StoreManager.DTOs.ViewModels;
 using StoreManager.Exceptions;
 using StoreManager.Models;
@@ -30,6 +31,15 @@ public class ProductService : IProductService
         var data = await _productRepository.GetByFunc(x => x.Id == id);
         var result = _mapper.Map<ProductViewModel>(data);
         if (result is null) throw new DbNotFoundException("Product not found");
+        return result;
+    }
+
+    public async Task<ProductViewModel> Createproduct(ProductInputModel model)
+    {
+        var product = _mapper.Map<Product>(model);
+        await _productRepository.Create(product);
+        await _productRepository.Commit();
+        var result = _mapper.Map<ProductViewModel>(product);
         return result;
     }
 }
