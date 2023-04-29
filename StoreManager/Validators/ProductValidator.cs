@@ -9,7 +9,11 @@ namespace StoreManager.Validators
         {
             RuleFor(x => x.Name)
                 .NotEmpty()
-                .MinimumLength(5);
+                .WithErrorCode("400")
+                .WithMessage("\"name\" is required")
+                .MinimumLength(5)
+                .WithErrorCode("422")
+                .WithMessage("\"name\" length must be at least 5 characters long");
         }
     }
 }

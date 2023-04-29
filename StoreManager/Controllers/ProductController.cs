@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using FluentValidation;
+using Microsoft.AspNetCore.Mvc;
 using StoreManager.Abstractions.Services;
 using StoreManager.DTOs.InputModels;
+using StoreManager.DTOs.ViewModels;
 
 namespace StoreManager.Controllers;
 
@@ -9,10 +11,12 @@ namespace StoreManager.Controllers;
 public class ProductController : ControllerBase
 {
     private readonly IProductService _productService;
+    private readonly IValidator<ProductInputModel> _validator;
 
-    public ProductController(IProductService productService)
+    public ProductController(IProductService productService, IValidator<ProductInputModel> validator)
     {
         _productService = productService;
+        _validator = validator;
     }
 
     [HttpGet]
@@ -29,6 +33,12 @@ public class ProductController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> CreateProduct(ProductInputModel model)
     {
+        var validation = await _validator.ValidateAsync(model);
+        if (!validation.IsValid)
+        {
+            return StatusCode(int.Parse(validation.Errors[0].ErrorCode),
+                new ErrorViewModel(validation.Errors[0].ErrorMessage));
+        }
         var result = await _productService.Createproduct(model);
         return Created($"products/{result.Id}", result);
     }

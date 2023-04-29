@@ -1,4 +1,5 @@
-﻿using StoreManager.Exceptions;
+﻿using StoreManager.DTOs.ViewModels;
+using StoreManager.Exceptions;
 using System.Text.Json;
 
 namespace StoreManager.Middlewares
@@ -32,12 +33,7 @@ namespace StoreManager.Middlewares
         {
             context.Response.StatusCode = statusCode;
             context.Response.ContentType = "application/json";
-            var result = JsonSerializer.Serialize(new
-            {
-                errors = ex.Message,
-                status = statusCode,
-                title = "One or more errors occurred"
-            });
+            var result = JsonSerializer.Serialize(new ErrorViewModel(ex.Message));
             return context.Response.WriteAsync(result);
         }
     }
