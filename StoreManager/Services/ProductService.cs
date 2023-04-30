@@ -29,9 +29,9 @@ public class ProductService : IProductService
     public async Task<ProductViewModel> GetProductById(int id)
     {
         var data = await _productRepository.GetByFunc(x => x.Id == id);
-        var result = _mapper.Map<ProductViewModel>(data);
-        if (result is null) throw new DbNotFoundException("Product not found");
-        return result;
+        if (data is null) throw new DbNotFoundException("Product not found");
+        return _mapper.Map<ProductViewModel>(data);
+
     }
 
     public async Task<ProductViewModel> Createproduct(ProductInputModel model)

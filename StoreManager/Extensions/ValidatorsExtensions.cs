@@ -9,6 +9,7 @@ namespace StoreManager.Extensions
         public static IServiceCollection AddValidators(this IServiceCollection services)
         {
             services.AddScoped<IValidator<ProductInputModel>, ProductValidator>();
+            services.AddScoped<IValidator<SaleProductInputModel>, SaleValidator>();
             return services;
         }
     }
