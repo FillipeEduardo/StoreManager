@@ -9,34 +9,39 @@ namespace StoreManager.Services;
 public class SaleService : ISaleService
 {
     private readonly ISaleRepository _saleRepository;
-    private readonly ISaleProductRepository _saleProductRepository;
+    private readonly IProductService _productService;
 
-    public SaleService(ISaleRepository saleRepository, ISaleProductRepository saleProductRepository)
+    public SaleService(ISaleRepository saleRepository,
+        IProductService productService)
     {
         _saleRepository = saleRepository;
-        _saleProductRepository = saleProductRepository;
+        _productService = productService;
     }
 
     public async Task<SaleProductViewModel> CreateSale(List<SaleProductInputModel> model)
     {
+        await ValidListProductInputModel(model);
         var sale = await _saleRepository.Create(new Sale());
-        await _saleRepository.Commit();
-        foreach (var item in model)
+        var salesProducts = model.Select(x => new SaleProduct
         {
-            var saleProduct = new SaleProduct
-            {
-                ProductId = item.ProductId,
-                SaleId = sale.Id,
-                Quantity = item.Quantity,
-            };
-            await _saleProductRepository.Create(saleProduct);
-        }
-        await _saleProductRepository.Commit();
-        var result = new SaleProductViewModel()
+            ProductId = x.ProductId,
+            Quantity = x.Quantity,
+            SaleId = sale.Id
+        }).ToList();
+        sale.SalesProducts = salesProducts;
+        await _saleRepository.Commit();
+        return new SaleProductViewModel()
         {
             Id = sale.Id,
             ItemsSold = model,
         };
-        return result;
+    }
+
+    private async Task ValidListProductInputModel(List<SaleProductInputModel> model)
+    {
+        foreach (var item in model)
+        {
+            await _productService.GetProductById(item.ProductId);
+        }
     }
 }
