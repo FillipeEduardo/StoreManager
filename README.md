@@ -2,22 +2,16 @@
 
 ## :page_with_curl: About
 
-React project developed by [Fillipe Eduardo Oliveira](https://www.linkedin.com/in/fillipe-eduardo-oliveira/)
+[Veja o projeto](https://fillipe-eduardo-trybetunes.netlify.app/)
 
-We had to develop a _iTunes_-style React application using the React Router library and fetching music data from the Apple Music's API.
+Projeto React desenvolvido por [Fillipe Eduardo Oliveira](https://www.linkedin.com/in/fillipe-eduardo-oliveira/)
 
-### Note
+### Sobre
 
-This project is still under development. I am implementing the layout, and I will refactor the code. I haven't deployed the application yet.
+O projeto utiliza a API do Itunes, nele é possivel pesquisar e favoritar músicas.
+O projeto foi desenvolvido totalmente em ReactJS com várias rotas para albuns, pesquisa, perfil e músicas favoritas.
 
-## :man_technologist: Developed Skills
-
-* Develop a React application
-* Create and reuse React components
-* React to user interactions by manipulating the components' states and props according to user events
-* Use the React Router library to handle page navigation
-
-## :hammer_and_wrench: Tools
+## :hammer_and_wrench: Stacks
 
 * HTML5
 * CSS3
