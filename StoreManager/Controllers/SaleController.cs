@@ -13,6 +13,7 @@ public class SaleController : ControllerBase
     private readonly ISaleService _saleService;
     private readonly IValidator<SaleProductInputModel> _validator;
 
+
     public SaleController(ISaleService saleService, IValidator<SaleProductInputModel> validator)
     {
         _saleService = saleService;
@@ -33,6 +34,20 @@ public class SaleController : ControllerBase
             }
         }
         var result = await _saleService.CreateSale(model);
+        return Ok(result);
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> GetAllSales()
+    {
+        var data = await _saleService.GetAllSales();
+        var result = data.Select(x => new SaleViewModel
+        {
+            Date = x.Sale.Date,
+            ProductId = x.ProductId,
+            Quantity = x.Quantity,
+            SaleId = x.Sale.Id,
+        });
         return Ok(result);
     }
 }

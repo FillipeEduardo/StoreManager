@@ -10,12 +10,15 @@ public class SaleService : ISaleService
 {
     private readonly ISaleRepository _saleRepository;
     private readonly IProductService _productService;
+    private readonly ISaleProductRepository _saleProductRepository;
 
     public SaleService(ISaleRepository saleRepository,
-        IProductService productService)
+        IProductService productService,
+        ISaleProductRepository saleProductRepository)
     {
         _saleRepository = saleRepository;
         _productService = productService;
+        _saleProductRepository = saleProductRepository;
     }
 
     public async Task<SaleProductViewModel> CreateSale(List<SaleProductInputModel> model)
@@ -35,6 +38,12 @@ public class SaleService : ISaleService
             Id = sale.Id,
             ItemsSold = model,
         };
+    }
+
+    public async Task<List<SaleProduct>> GetAllSales()
+    {
+        var result = await _saleProductRepository.GetAllWithInclude("Sale");
+        return result;
     }
 
     private async Task ValidListProductInputModel(List<SaleProductInputModel> model)

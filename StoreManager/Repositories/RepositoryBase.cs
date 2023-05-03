@@ -21,6 +21,11 @@ namespace StoreManager.Repositories
             return await _dbSet.AsNoTracking().ToListAsync();
         }
 
+        public async Task<List<TEntity>> GetAllWithInclude(string propNav)
+        {
+            return await _dbSet.Include(propNav).AsNoTracking().ToListAsync();
+        }
+
         public async Task<TEntity> GetByFunc(Expression<Func<TEntity, bool>> func)
         {
             return await _dbSet.FirstOrDefaultAsync(func);
