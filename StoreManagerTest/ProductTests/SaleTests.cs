@@ -7,7 +7,7 @@ using StoreManager.Exceptions;
 using StoreManager.Models;
 using StoreManager.Services;
 using StoreManagerTest.Extensions;
-using StoreManagerTest.Mocks;
+using System.Linq.Expressions;
 
 namespace StoreManagerTest.ProductTests;
 
@@ -46,10 +46,10 @@ public class SaleTests
         Assert.Equal(result.ItemsSold[0].Quantity, sale.SalesProducts[0].Quantity);
 
     }
-
+    [Fact]
     public async Task CreateSale_ProductNotFound_ThrowException()
     {
-        var sales = SaleMock.GetSaleProducts();
+        var sales = new Fixture().FixCircularReference().Create<List<SaleProductInputModel>>();
         _productService.Setup(ps => ps.GetProductById(It.IsAny<int>())).Throws(new DbNotFoundException("Product not found"));
 
         var result = await Assert.ThrowsAsync<DbNotFoundException>(async () =>
@@ -59,5 +59,46 @@ public class SaleTests
 
         Assert.Equal("Product not found", result.Message);
 
+    }
+    [Fact]
+    public async Task GetAllSales_Success()
+    {
+        var sales = new Fixture().FixCircularReference().Create<List<SaleProduct>>();
+        _saleProductRepository.Setup(x => x.GetAllWithInclude("Sale")).Returns(Task.FromResult(sales));
+        var result = await _saleService.GetAllSales();
+
+        _saleProductRepository.Verify(x => x.GetAllWithInclude("Sale"), Times.Once);
+        Assert.Equivalent(result, sales);
+    }
+
+    [Fact]
+    public async Task GetSaleById_NotFound_ThrowException()
+    {
+        var sales = new List<SaleProduct>();
+        _saleProductRepository
+            .Setup(x => x
+            .GetByFuncWithInclude("Sale", It.IsAny<Expression<Func<SaleProduct, bool>>>()))
+            .Returns(Task.FromResult(sales));
+
+        var result = await Assert.ThrowsAsync<DbNotFoundException>(async () =>
+        {
+            await _saleService.GetSaleById(1);
+        });
+    }
+    [Fact]
+    public async Task GetSaleById_Success()
+    {
+        var sales = new Fixture().FixCircularReference().Create<List<SaleProduct>>();
+        _saleProductRepository
+            .Setup(x => x
+            .GetByFuncWithInclude("Sale", It.IsAny<Expression<Func<SaleProduct, bool>>>()))
+            .Returns(Task.FromResult(sales));
+
+        var result = await _saleService.GetSaleById(1);
+
+        _saleProductRepository
+            .Verify(x => x
+            .GetByFuncWithInclude("Sale", It.IsAny<Expression<Func<SaleProduct, bool>>>()), Times.Once);
+        Assert.Equivalent(result, sales);
     }
 }

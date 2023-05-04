@@ -8,7 +8,6 @@ using StoreManager.Exceptions;
 using StoreManager.Models;
 using StoreManager.Services;
 using StoreManagerTest.Extensions;
-using StoreManagerTest.Mocks;
 using System.Linq.Expressions;
 
 namespace StoreManagerTest.ProductTests;
@@ -30,7 +29,7 @@ public class ProductTests
     public async Task GetAllProducts_WithoutParameters_Success()
     {
 
-        var products = ProductMock.ReturnListProducts();
+        var products = new Fixture().FixCircularReference().Create<List<Product>>();
         _productRepository.Setup(pr => pr.GetAll()).Returns(Task.FromResult(products));
 
         var result = await _productService.GetAllProducts();
