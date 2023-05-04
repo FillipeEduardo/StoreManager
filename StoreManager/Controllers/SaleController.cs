@@ -50,4 +50,16 @@ public class SaleController : ControllerBase
         });
         return Ok(result);
     }
+    [HttpGet("{id:int}")]
+    public async Task<IActionResult> GetSaleById(int id)
+    {
+        var data = await _saleService.GetSaleById(id);
+        var result = data.Select(x => new SaleWithoutIdViewModel
+        {
+            Date = x.Sale.Date,
+            ProductId = x.ProductId,
+            Quantity = x.Quantity,
+        });
+        return Ok(result);
+    }
 }

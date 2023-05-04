@@ -8,5 +8,6 @@ namespace StoreManager.Abstractions.Services
     {
         Task<SaleProductViewModel> CreateSale(List<SaleProductInputModel> model);
         Task<List<SaleProduct>> GetAllSales();
+        Task<List<SaleProduct>> GetSaleById(int id);
     }
 }

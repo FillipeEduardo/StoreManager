@@ -2,6 +2,7 @@
 using StoreManager.Abstractions.Services;
 using StoreManager.DTOs.InputModels;
 using StoreManager.DTOs.ViewModels;
+using StoreManager.Exceptions;
 using StoreManager.Models;
 
 namespace StoreManager.Services;
@@ -43,6 +44,13 @@ public class SaleService : ISaleService
     public async Task<List<SaleProduct>> GetAllSales()
     {
         var result = await _saleProductRepository.GetAllWithInclude("Sale");
+        return result;
+    }
+
+    public async Task<List<SaleProduct>> GetSaleById(int id)
+    {
+        var result = await _saleProductRepository.GetByFuncWithInclude("Sale", x => x.SaleId == id);
+        if (result.Count == 0) throw new DbNotFoundException("Sale not found");
         return result;
     }
 
