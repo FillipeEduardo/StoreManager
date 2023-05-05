@@ -62,4 +62,10 @@ public class SaleController : ControllerBase
         });
         return Ok(result);
     }
+    [HttpDelete("{id:int}")]
+    public async Task<IActionResult> DeleteSale(int id)
+    {
+        await _saleService.DeleteSale(id);
+        return NoContent();
+    }
 }

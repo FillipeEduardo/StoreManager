@@ -54,6 +54,14 @@ public class SaleService : ISaleService
         return result;
     }
 
+    public async Task DeleteSale(int id)
+    {
+        var data = await _saleRepository.GetByFunc(x => x.Id == id);
+        if (data is null) throw new DbNotFoundException("Sale not found");
+        _saleRepository.Delete(data);
+        await _saleRepository.Commit();
+    }
+
     private async Task ValidListProductInputModel(List<SaleProductInputModel> model)
     {
         foreach (var item in model)
