@@ -42,4 +42,15 @@ public class ProductService : IProductService
         var result = _mapper.Map<ProductViewModel>(product);
         return result;
     }
+
+    public async Task<ProductViewModel> UpdateProduct(int id, ProductInputModel model)
+    {
+        var data = await _productRepository.GetByFunc(x => x.Id == id);
+        if (data is null) throw new DbNotFoundException("Product not found");
+        data.Name = model.Name;
+        _productRepository.Update(data);
+        await _productRepository.Commit();
+        var result = _mapper.Map<ProductViewModel>(data);
+        return result;
+    }
 }

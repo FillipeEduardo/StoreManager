@@ -42,4 +42,17 @@ public class ProductController : ControllerBase
         var result = await _productService.Createproduct(model);
         return Created($"products/{result.Id}", result);
     }
+
+    [HttpPut("{id:int}")]
+    public async Task<IActionResult> UpdateProduct(int id, ProductInputModel model)
+    {
+        var validation = await _validator.ValidateAsync(model);
+        if (!validation.IsValid)
+        {
+            return StatusCode(int.Parse(validation.Errors[0].ErrorCode),
+                new ErrorViewModel(validation.Errors[0].ErrorMessage));
+        }
+        var result = await _productService.UpdateProduct(id, model);
+        return Ok(result);
+    }
 }
