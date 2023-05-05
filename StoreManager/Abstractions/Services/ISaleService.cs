@@ -10,5 +10,6 @@ namespace StoreManager.Abstractions.Services
         Task<List<SaleProduct>> GetAllSales();
         Task<List<SaleProduct>> GetSaleById(int id);
         Task DeleteSale(int id);
+        Task<SaleProductViewModel> UpdateSale(int id, IEnumerable<SaleProductInputModel> model);
     }
 }

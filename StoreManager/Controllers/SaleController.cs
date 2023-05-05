@@ -68,4 +68,10 @@ public class SaleController : ControllerBase
         await _saleService.DeleteSale(id);
         return NoContent();
     }
+    [HttpPut("{id:int}")]
+    public async Task<IActionResult> UpdateSale(int id, List<SaleProductInputModel> model)
+    {
+        var result = await _saleService.UpdateSale(id, model);
+        return Ok(result);
+    }
 }

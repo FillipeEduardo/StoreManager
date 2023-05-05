@@ -26,12 +26,7 @@ public class SaleService : ISaleService
     {
         await ValidListProductInputModel(model);
         var sale = await _saleRepository.Create(new Sale());
-        var salesProducts = model.Select(x => new SaleProduct
-        {
-            ProductId = x.ProductId,
-            Quantity = x.Quantity,
-            SaleId = sale.Id
-        }).ToList();
+        var salesProducts = mappingSalesProducts(sale.Id, model);
         sale.SalesProducts = salesProducts;
         await _saleRepository.Commit();
         return new SaleProductViewModel()
@@ -60,6 +55,32 @@ public class SaleService : ISaleService
         if (data is null) throw new DbNotFoundException("Sale not found");
         _saleRepository.Delete(data);
         await _saleRepository.Commit();
+    }
+
+    public async Task<SaleProductViewModel> UpdateSale(int id, IEnumerable<SaleProductInputModel> model)
+    {
+        var sales = await _saleRepository.GetByFuncWithInclude("SalesProducts", x => x.Id == id);
+        if (sales.Count == 0) throw new DbNotFoundException("Sale not found");
+        List<SaleProduct> salesProducts = mappingSalesProducts(id, model);
+        sales[0].SalesProducts = salesProducts;
+        _saleRepository.Update(sales[0]);
+        await _saleRepository.Commit();
+        var result = new SaleProductViewModel
+        {
+            Id = sales[0].Id,
+            ItemsSold = model.ToList(),
+        };
+        return result;
+    }
+
+    private static List<SaleProduct> mappingSalesProducts(int id, IEnumerable<SaleProductInputModel> model)
+    {
+        return model.Select(x => new SaleProduct
+        {
+            ProductId = x.ProductId,
+            Quantity = x.Quantity,
+            SaleId = id
+        }).ToList();
     }
 
     private async Task ValidListProductInputModel(List<SaleProductInputModel> model)
