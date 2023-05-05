@@ -3,13 +3,14 @@
 ## :page_with_curl: Sobre
 
 Projeto desenvolvido por [Fillipe Eduardo Oliveira](https://www.linkedin.com/in/fillipe-eduardo-oliveira/)
+
 O projeto cria endpoints para as entidades produtos e vendas, com relacionamento de N:N
-A API está documentada com Swagger.
 
 * Para rodar o projeto utilize a versão 7 do DotNet
 * Tenha um servidor MYSQL rodando na sua maquina na porta 3306
 * Tenha a ferramenta dotnet ef tools instalada e gere o banco de dados "dotnet ef database update"
 * Finalmente utilize o comando "dotnet run"
+* Acesse os endpoints pela url https://localhost:7161/swagger/index.html
 
 ## :man_technologist: Habilidades Desenvolvidas
 
