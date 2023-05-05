@@ -55,4 +55,11 @@ public class ProductController : ControllerBase
         var result = await _productService.UpdateProduct(id, model);
         return Ok(result);
     }
+
+    [HttpDelete("{id:int}")]
+    public async Task<IActionResult> DeleteProduct(int id)
+    {
+        await _productService.DeleteProduct(id);
+        return NoContent();
+    }
 }

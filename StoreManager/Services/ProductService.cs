@@ -53,4 +53,12 @@ public class ProductService : IProductService
         var result = _mapper.Map<ProductViewModel>(data);
         return result;
     }
+
+    public async Task DeleteProduct(int id)
+    {
+        var data = await _productRepository.GetByFunc(x => x.Id == id);
+        if (data is null) throw new DbNotFoundException("Product not found");
+        _productRepository.Delete(data);
+        await _productRepository.Commit();
+    }
 }
