@@ -37,6 +37,12 @@ namespace StoreManager.Repositories
             return await _dbSet.FirstOrDefaultAsync(func);
         }
 
+        public async Task<List<TEntity>> GetListByFunc(Expression<Func<TEntity, bool>> func)
+        {
+            return await _dbSet.Where(func).ToListAsync();
+
+        }
+
         public async Task<TEntity> Create(TEntity entity)
         {
             await _dbSet.AddAsync(entity);

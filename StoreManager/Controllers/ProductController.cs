@@ -62,4 +62,10 @@ public class ProductController : ControllerBase
         await _productService.DeleteProduct(id);
         return NoContent();
     }
+    [HttpGet("search")]
+    public async Task<IActionResult> GetBySearch([FromQuery] string q = "")
+    {
+        var result = await _productService.SearchByTerm(q);
+        return Ok(result);
+    }
 }

@@ -61,4 +61,10 @@ public class ProductService : IProductService
         _productRepository.Delete(data);
         await _productRepository.Commit();
     }
+
+    public async Task<List<ProductViewModel>> SearchByTerm(string term)
+    {
+        var data = await _productRepository.GetListByFunc(x => x.Name.Contains(term));
+        return _mapper.Map<List<ProductViewModel>>(data);
+    }
 }

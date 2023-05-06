@@ -10,5 +10,6 @@ namespace StoreManager.Abstractions.Services
         Task<ProductViewModel> Createproduct(ProductInputModel model);
         Task<ProductViewModel> UpdateProduct(int id, ProductInputModel model);
         Task DeleteProduct(int id);
+        Task<List<ProductViewModel>> SearchByTerm(string term);
     }
 }

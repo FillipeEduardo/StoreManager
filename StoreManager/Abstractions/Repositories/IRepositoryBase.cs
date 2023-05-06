@@ -12,5 +12,6 @@ namespace StoreManager.Abstractions.Repositories
         Task Commit();
         Task<List<TEntity>> GetAllWithInclude(string propNav);
         Task<List<TEntity>> GetByFuncWithInclude(string propNav, Expression<Func<TEntity, bool>> func);
+        Task<List<TEntity>> GetListByFunc(Expression<Func<TEntity, bool>> func);
     }
 }
